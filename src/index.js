@@ -10,7 +10,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(require('./routes'));
 
-mongoose.connect('mongodb+srv://ianpvs:G0!125667ian@cluster0-nvc84.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://ianpvs:root123456@cluster0-nvc84.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true
 })
 
