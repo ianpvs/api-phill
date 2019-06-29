@@ -5,7 +5,7 @@ const cors = require('cors')
 app.use(cors())
 
 consign()
-    .include('./routes.js')
+    .include('src/routes.js')
     .into(app)
 
 app.listen('3333')
