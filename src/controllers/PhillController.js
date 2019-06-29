@@ -15,5 +15,11 @@ module.exports = {
             user_id
         });
         return res.json(phill);
+    },
+
+    async show(req, res) {
+        const id = req.params.id;
+        const data = await Phill.find({ user_id: id }).sort('-createdAt');
+        return res.json(data);
     }
 }
