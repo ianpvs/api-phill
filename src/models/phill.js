@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const PhillSchema = new mongoose.Schema({
     sintomas: {
@@ -10,6 +10,6 @@ const PhillSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true
-})
+});
 
-module.exports = mongoose.model('phill', PhillSchema)
+module.exports = mongoose.model('phill', PhillSchema);
