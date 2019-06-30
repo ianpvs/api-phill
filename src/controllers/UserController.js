@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async store(req, res) {
-        let { name, birthday, deases, password } = req.body;
+        let { name, birthday, deases, password, email } = req.body;
 
         const cryptedPassword = await bcrypt.hash(password, 10).then(function (hash) {
             return hash;
@@ -20,6 +20,7 @@ module.exports = {
 
         const user = await Users.create({
             name,
+            email,
             birthday,
             deases,
             password: cryptedPassword
@@ -29,19 +30,23 @@ module.exports = {
     },
 
     async login(req, res) {
-        const { email, password } = res.body;
+        const { email, password } = req.body;
 
         if (!email || !password) {
             return res.status(200).json({ msg: "Informe o e-mail e senha!" });
         }
 
-        const user = Users.find({ email: email });
+        const user = await Users.findOne({ email: email }, (err, data) => data);
 
         if (!user) {
             return res.status(200).json({ msg: "Usuário não encontrado!" });
         }
 
-        const match = bcrypt.compareSync(password, user.password)
+        const cryptedPassword = await bcrypt.hash(password, 10).then(function (hash) {
+            return hash;
+        });
+
+        const match = bcrypt.compare(cryptedPassword, user.password)
 
         if (!match) return res.status(200).json({ msg: "Senha inválida!" });
 
@@ -49,7 +54,7 @@ module.exports = {
 
         const payload = {
             ...user,
-            iat: Date.now(),
+            iat: now,
             exp: now + (60 * 60 * 24)
         }
 
