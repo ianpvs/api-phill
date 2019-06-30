@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jwt-simple');
 const { authSecret } = require('../../.env')
 
@@ -14,9 +14,8 @@ module.exports = {
     async store(req, res) {
         let { name, birthday, deases, password, email } = req.body;
 
-        const cryptedPassword = await bcrypt.hash(password, 10).then(function (hash) {
-            return hash;
-        });
+        const salt = bcrypt.genSaltSync(10);
+        const cryptedPassword = bcrypt.hashSync(password);
 
         const user = await Users.create({
             name,
@@ -42,11 +41,7 @@ module.exports = {
             return res.status(200).json({ msg: "Usuário não encontrado!" });
         }
 
-        const cryptedPassword = await bcrypt.hash(password, 10).then(function (hash) {
-            return hash;
-        });
-
-        const match = bcrypt.compare(cryptedPassword, user.password)
+        const match = bcrypt.compareSync(password, user.password)
 
         if (!match) return res.status(200).json({ msg: "Senha inválida!" });
 
