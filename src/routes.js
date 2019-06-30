@@ -4,6 +4,7 @@ const PhillController = require('./controllers/PhillController');
 module.exports = app => {
 
     app.post('/signin', UserController.login)
+    app.post('/signup', UserController.store);
 
     app.route('/users')
         .all(app.src.config.passport.authenticate())
